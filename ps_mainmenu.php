@@ -52,12 +52,18 @@ class Ps_MainMenu extends Module implements WidgetInterface
      */
     protected $spacer_size = '5';
 
+    /*
+     * Array of files from the category image directory
+     */
+    private $imageFiles;
+
     public function __construct()
     {
         $this->name = 'ps_mainmenu';
         $this->tab = 'front_office_features';
         $this->version = '2.1.1';
         $this->author = 'PrestaShop';
+        $this->imageFiles = null;
 
         $this->bootstrap = true;
         parent::__construct();
@@ -737,10 +743,12 @@ class Ps_MainMenu extends Module implements WidgetInterface
             if (isset($category['children']) && !empty($category['children'])) {
                 $node['children'] = $this->generateCategoriesMenu($category['children'], 1);
 
-                $files = scandir(_PS_CAT_IMG_DIR_);
+                if ($this->imageFiles === null) {
+                    $this->imageFiles = scandir(_PS_CAT_IMG_DIR_);
+                }
 
-                if (count(preg_grep('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $files)) > 0) {
-                    foreach ($files as $file) {
+                if (count(preg_grep('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $this->imageFiles)) > 0) {
+                    foreach ($this->imageFiles as $file) {
                         if (preg_match('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $file) === 1) {
                             $image_url = $this->context->link->getMediaLink(_THEME_CAT_DIR_.$file);
                             $node['image_urls'][] = $image_url;
