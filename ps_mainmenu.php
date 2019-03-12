@@ -710,20 +710,16 @@ class Ps_MainMenu extends Module implements WidgetInterface
     {
         $nodes = [];
 
-        foreach ($categories as $key => $category)
-        {
+        foreach ($categories as $key => $category) {
             $node = $this->makeNode([]);
-            if ($category['level_depth'] > 1)
-            {
+            if ($category['level_depth'] > 1) {
                 $cat = new Category($category['id_category']);
                 $link = $cat->getLink();
                 // Check if customer is set and check access
-                if ((isset($this->context->customer)) && (!($cat->checkAccess($this->context->customer->id)))) {
+                if (isset($this->context->customer) && !$cat->checkAccess($this->context->customer->id)) {
                     continue;
                 }
-            }
-            else
-            {
+            } else {
                 $link = $this->context->link->getPageLink('index');
             }
 
@@ -949,34 +945,39 @@ class Ps_MainMenu extends Module implements WidgetInterface
 
     protected function getCacheDirectory()
     {
-        $groups = (isset($this->context->customer)) ? $this->context->customer->getGroups() : null;
-        $dir =_PS_CACHE_DIR_ . 'ps_mainmenu' . (((isset($groups)) && (is_array($groups)) && (count($groups) > 0)) ? '/' . implode('_', $groups) : '');
-        if (!(is_dir($dir)))
+        $dir =_PS_CACHE_DIR_ . 'ps_mainmenu';
+
+        if (isset($this->context->customer)) {
+            $groups = $this->context->customer->getGroups();
+            if (count($groups)) {
+                $dir .=  '/' . implode('_', $groups);
+            }
+        }
+        if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
+        }
 
         return $dir;
     }
 
     protected function clearMenuCache()
     {
-        $dir = $this->getCacheDirectory();
-        if (!(is_dir($dir)))
-            return;
-
-        $this->cleanMenuCacheDirectory($dir);
+        $this->cleanMenuCacheDirectory(
+            $this->getCacheDirectory()
+        );
     }
 
     private function cleanMenuCacheDirectory(string $dir)
     {
-        foreach (scandir($dir) as $entry)
-        {
-            if (($entry !== '.') && ($entry !== '..'))
-            {
-                $path = $dir . DIRECTORY_SEPARATOR . $entry;
-                if (is_dir($path))
-                    $this->cleanMenuCacheDirectory($path);
-                else if (preg_match('/\.json$/', $entry))
-                    unlink($path);
+        foreach (scandir($dir) as $entry) {
+            if (in_array($entry, ['.', '..'])) {
+                continue;
+            }
+            $path = $dir . DIRECTORY_SEPARATOR . $entry;
+            if (is_dir($path)) {
+                $this->cleanMenuCacheDirectory($path);
+            } elseif (preg_match('/\.json$/', $entry)) {
+                unlink($path);
             }
         }
     }
