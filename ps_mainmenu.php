@@ -716,7 +716,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
                 $cat = new Category($category['id_category']);
                 $link = $cat->getLink();
                 // Check if customer is set and check access
-                if (isset($this->context->customer) && !$cat->checkAccess($this->context->customer->id)) {
+                if (isset($this->context->customer->id) && !$cat->checkAccess($this->context->customer->id)) {
                     continue;
                 }
             } else {
@@ -962,9 +962,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
 
     protected function clearMenuCache()
     {
-        $this->cleanMenuCacheDirectory(
-            $this->getCacheDirectory()
-        );
+        $this->cleanMenuCacheDirectory(_PS_CACHE_DIR_ . 'ps_mainmenu');
     }
 
     private function cleanMenuCacheDirectory(string $dir)
