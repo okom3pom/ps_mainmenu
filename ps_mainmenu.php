@@ -718,10 +718,13 @@ class Ps_MainMenu extends Module implements WidgetInterface
 
         foreach ($categories as $key => $category) {
             $node = $this->makeNode([]);
-
             if ($category['level_depth'] > 1) {
                 $cat = new Category($category['id_category']);
                 $link = $cat->getLink();
+                // Check if customer is set and check access
+                if (Validate::isLoadedObject($this->context->customer) && !$cat->checkAccess($this->context->customer->id)) {
+                    continue;
+                }
             } else {
                 $link = $this->context->link->getPageLink('index');
             }
@@ -950,20 +953,40 @@ class Ps_MainMenu extends Module implements WidgetInterface
 
     protected function getCacheDirectory()
     {
-        return _PS_CACHE_DIR_ . 'ps_mainmenu';
+        $dir =_PS_CACHE_DIR_ . 'ps_mainmenu';
+
+        if (isset($this->context->customer)) {
+            $groups = $this->context->customer->getGroups();
+            if (!empty($groups)) {
+                $dir .=  '/' . implode('_', $groups);
+            }
+        }
+        if (!is_dir($dir)) {
+            mkdir($dir, 0775, true);
+        }
+
+        return $dir;
     }
 
     protected function clearMenuCache()
     {
-        $dir = $this->getCacheDirectory();
+        $this->cleanMenuCacheDirectory(_PS_CACHE_DIR_ . 'ps_mainmenu');
+    }
 
+    private function cleanMenuCacheDirectory($dir)
+    {
         if (!is_dir($dir)) {
             return;
         }
-
         foreach (scandir($dir) as $entry) {
-            if (preg_match('/\.json$/', $entry)) {
-                unlink($dir . DIRECTORY_SEPARATOR . $entry);
+            if (in_array($entry, ['.', '..'])) {
+                continue;
+            }
+            $path = $dir . DIRECTORY_SEPARATOR . $entry;
+            if (is_dir($path)) {
+                $this->cleanMenuCacheDirectory($path);
+            } elseif (preg_match('/\.json$/', $entry)) {
+                unlink($path);
             }
         }
     }
