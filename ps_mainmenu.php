@@ -716,7 +716,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
                 $cat = new Category($category['id_category']);
                 $link = $cat->getLink();
                 // Check if customer is set and check access
-                if (isset($this->context->customer->id) && !$cat->checkAccess($this->context->customer->id)) {
+                if (Validate::isLoadedObject($this->context->customer) && !$cat->checkAccess($this->context->customer->id)) {
                     continue;
                 }
             } else {
@@ -949,7 +949,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
 
         if (isset($this->context->customer)) {
             $groups = $this->context->customer->getGroups();
-            if (count($groups)) {
+            if (!empty($groups)) {
                 $dir .=  '/' . implode('_', $groups);
             }
         }
@@ -965,8 +965,11 @@ class Ps_MainMenu extends Module implements WidgetInterface
         $this->cleanMenuCacheDirectory(_PS_CACHE_DIR_ . 'ps_mainmenu');
     }
 
-    private function cleanMenuCacheDirectory(string $dir)
+    private function cleanMenuCacheDirectory($dir)
     {
+        if (!is_dir($dir)) {
+            return;
+        }
         foreach (scandir($dir) as $entry) {
             if (in_array($entry, ['.', '..'])) {
                 continue;
