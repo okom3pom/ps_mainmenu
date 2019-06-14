@@ -30,6 +30,11 @@ require(dirname(__FILE__).'/ps_menutoplinks.class.php');
 
 class Ps_MainMenu extends Module implements WidgetInterface
 {
+    /**
+     * @var string Name of the module running on PS 1.6.x. Used for data migration.
+     */
+    const PS_16_EQUIVALENT_MODULE = 'blocktopmenu';
+
     const MENU_JSON_CACHE_KEY = 'MOD_BLOCKTOPMENU_MENU_JSON';
 
     protected $_menu = '';
@@ -98,6 +103,10 @@ class Ps_MainMenu extends Module implements WidgetInterface
         }
 
         if ($delete_params) {
+            if ($this->uninstallPrestaShop16Module()) {
+                Configuration::deleteByName('MOD_BLOCKTOPMENU_SEARCH');
+                return true;
+            }
             if (!$this->installDb() || !Configuration::updateGlobalValue('MOD_BLOCKTOPMENU_ITEMS', 'CAT3,CAT6,CAT9')) {
                 return false;
             }
@@ -159,6 +168,27 @@ class Ps_MainMenu extends Module implements WidgetInterface
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     * Migrate data from 1.6 equivalent module (if applicable), then uninstall
+     */
+    public function uninstallPrestaShop16Module()
+    {
+        if (!Module::isInstalled(self::PS_16_EQUIVALENT_MODULE)) {
+            return false;
+        }
+        $oldModule = Module::getInstanceByName(self::PS_16_EQUIVALENT_MODULE);
+        if ($oldModule) {
+            // This closure calls the parent class to prevent data to be erased
+            // It allows the new module to be configured without migration
+            $parentUninstallClosure = function() {
+                return parent::uninstall();
+            };
+            $parentUninstallClosure = $parentUninstallClosure->bindTo($oldModule, get_class($oldModule));
+            $parentUninstallClosure();
+        }
         return true;
     }
 
