@@ -67,16 +67,6 @@ class Ps_MenuTopLinks
         return array('link' => $link, 'label' => $label, 'new_window' => $new_window);
     }
 
-    public static function updateUrl($link)
-    {
-        for($i = 1; $i <= count($link); $i++) {
-            if (substr($link[$i], 0, 7) !== "http://" && substr($link[$i], 0, 8) !== "https://") {
-                $link[$i] = "http://" . $link[$i];
-            }
-        }
-        return $link;
-    }
-
     public static function add($link, $label, $newWindow = 0, $id_shop)
     {
         if (!is_array($label)) {
@@ -86,7 +76,6 @@ class Ps_MenuTopLinks
             return false;
         }
 
-        $link = self::updateUrl($link);
         Db::getInstance()->insert(
             'linksmenutop',
             array(
@@ -123,7 +112,6 @@ class Ps_MenuTopLinks
             return false;
         }
 
-        $link = self::updateUrl($link);
         Db::getInstance()->update(
             'linksmenutop',
             array(
