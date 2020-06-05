@@ -1,0 +1,32 @@
+GitHub contributors:
+--------------------------------
+ - AlexEven
+ - AntoineMille
+ - Damien Metzger
+ - Francois Gaillard
+ - Gregory Roussac
+ - Jerome Nadaud
+ - Jerome Nadaud
+ - Jérôme Nadaud
+ - Marius Kiznis
+ - Maxime Biloé
+ - NielsH
+ - Quetzacoalt91
+ - aleeks
+ - antoin-m
+ - axometeam
+ - djfm
+ - dkarvounaris
+ - eternoendless
+ - indesign47
+ - jeromenadaud
+ - julienbourdeau
+ - kokspflanze
+ - marionf
+ - matks
+ - matthieumota
+ - maximebiloe
+ - mickaelandrieu
+ - sfroment
+ - tchauviere
+ - toutantic
