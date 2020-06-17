@@ -1427,7 +1427,9 @@ class Ps_MainMenu extends Module implements WidgetInterface
         $id_lang = $this->context->language->id;
         $id_shop = $this->context->shop->id;
 
-        $key = self::MENU_JSON_CACHE_KEY . '_' . $id_lang . '_' . $id_shop . '.json';
+        $this->user_groups = Customer::getGroupsStatic($this->context->customer->id);
+        $groupsKey = empty($this->user_groups) ? '' : '_' . join("_", $this->user_groups);
+        $key = self::MENU_JSON_CACHE_KEY . '_' . $id_lang . '_' . $id_shop . $groupsKey . '.json';
         $cacheDir = $this->getCacheDirectory();
         $cacheFile = $cacheDir . DIRECTORY_SEPARATOR . $key;
         $menu = json_decode(@file_get_contents($cacheFile), true);
