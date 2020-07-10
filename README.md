@@ -4,10 +4,6 @@
 
 Adds a new horizontal menu to the top of your PrestaShop.
 
-## Multistore compatibility
-
-This module is partially compatible with the multistore feature. Some of its options might not be available.
-
 ## Reporting issues
 
 You can report issues with this module in the main PrestaShop repository. [Click here to report an issue][report-issue]. 
