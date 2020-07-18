@@ -743,19 +743,17 @@ class Ps_MainMenu extends Module implements WidgetInterface
             $node['label']   = $category['name'];
             $node['image_urls']  = [];
 
-            if (isset($category['children']) && !empty($category['children'])) {
-                $node['children'] = $this->generateCategoriesMenu($category['children'], 1);
+            $node['children'] = $this->generateCategoriesMenu($category['children'], 1);
 
-                if ($this->imageFiles === null) {
-                    $this->imageFiles = scandir(_PS_CAT_IMG_DIR_);
-                }
+            if ($this->imageFiles === null) {
+                $this->imageFiles = scandir(_PS_CAT_IMG_DIR_);
+            }
 
-                if (count(preg_grep('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $this->imageFiles)) > 0) {
-                    foreach ($this->imageFiles as $file) {
-                        if (preg_match('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $file) === 1) {
-                            $image_url = $this->context->link->getMediaLink(_THEME_CAT_DIR_.$file);
-                            $node['image_urls'][] = $image_url;
-                        }
+            if (count(preg_grep('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $this->imageFiles)) > 0) {
+                foreach ($this->imageFiles as $file) {
+                    if (preg_match('/^'.$category['id_category'].'-([0-9])?_thumb.jpg/i', $file) === 1) {
+                        $image_url = $this->context->link->getMediaLink(_THEME_CAT_DIR_.$file);
+                        $node['image_urls'][] = $image_url;
                     }
                 }
             }
