@@ -1116,7 +1116,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
                             array(
                                 'id' => 'active_on',
                                 'value' => 1,
-                                'label' => $this->trans('YES', array(), 'Admin.Global')
+                                'label' => $this->trans('Yes', array(), 'Admin.Global')
                             ),
                             array(
                                 'id' => 'active_off',
