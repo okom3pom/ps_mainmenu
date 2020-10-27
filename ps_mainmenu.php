@@ -743,7 +743,8 @@ class Ps_MainMenu extends Module implements WidgetInterface
             $node['label']   = $category['name'];
             $node['image_urls']  = [];
 
-            $node['children'] = $this->generateCategoriesMenu($category['children'], 1);
+            if (isset($category['children']) && !empty($category['children']))
+                $node['children'] = $this->generateCategoriesMenu($category['children'], 1);
 
             if ($this->imageFiles === null) {
                 $this->imageFiles = scandir(_PS_CAT_IMG_DIR_);
