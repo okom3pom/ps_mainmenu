@@ -69,7 +69,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
         parent::__construct();
 
         $this->displayName = $this->trans('Main menu', array(), 'Modules.Mainmenu.Admin');
-        $this->description = $this->trans('Adds a new menu to the top of your e-commerce website.', array(), 'Modules.Mainmenu.Admin');
+        $this->description = $this->trans('Make it easy for your visitors to find their way on your store, select the right link and turn it into a menu item.', array(), 'Modules.Mainmenu.Admin');
         $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
     }
 
