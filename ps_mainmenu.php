@@ -1127,7 +1127,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
         $fields_form = [
             'form' => [
                 'legend' => [
-                    'title' => (Tools::getIsset('updatelinksmenutop') && Tools::getValue('updatelinksmenutop')) ?
+                    'title' => Tools::getValue('id_linksmenutop') && !Tools::isSubmit('updatelink') ?
                         $this->trans('Update link', [], 'Modules.Mainmenu.Admin') : $this->trans('Add a new link', [], 'Modules.Mainmenu.Admin'),
                     'icon' => 'icon-link',
                 ],
@@ -1180,7 +1180,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
         $helper->identifier = $this->identifier;
         $helper->fields_value = $this->getAddLinkFieldsValues();
 
-        if (Tools::getIsset('updatelinksmenutop') && Tools::getValue('updatelinksmenutop')) {
+        if (Tools::getValue('id_linksmenutop') && !Tools::isSubmit('updatelink')) {
             $fields_form['form']['submit'] = [
                 'name' => 'updatelinksmenutop',
                 'title' => $this->trans('Update', [], 'Admin.Actions'),
