@@ -10,3 +10,4 @@ parameters:
     - ../../views/
   reportUnmatchedIgnoredErrors: false
   level: 5
+  
