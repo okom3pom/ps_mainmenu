@@ -1077,7 +1077,6 @@ class Ps_MainMenu extends Module implements WidgetInterface
         $lang = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language = $lang->id;
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
-        $this->fields_form = [];
         $helper->module = $this;
         $helper->identifier = $this->identifier;
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) .
@@ -1148,7 +1147,6 @@ class Ps_MainMenu extends Module implements WidgetInterface
         $lang = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language = $lang->id;
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
-        $helper->fields_form = [];
         $helper->identifier = $this->identifier;
         $helper->fields_value = $this->getAddLinkFieldsValues();
 
