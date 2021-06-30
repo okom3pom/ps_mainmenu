@@ -25,7 +25,7 @@
  */
 class Ps_MenuTopLinks
 {
-    public static function gets($id_lang, $id_linksmenutop = null, $id_shop)
+    public static function gets($id_lang, $id_linksmenutop = null, $id_shop = 0)
     {
         $sql = 'SELECT l.id_linksmenutop, l.new_window, s.name, ll.link, ll.label
 				FROM ' . _DB_PREFIX_ . 'linksmenutop l
@@ -66,7 +66,7 @@ class Ps_MenuTopLinks
         return ['link' => $link, 'label' => $label, 'new_window' => $new_window];
     }
 
-    public static function add($link, $label, $newWindow = 0, $id_shop)
+    public static function add($link, $label, $newWindow = 0, $id_shop = 0)
     {
         if (!is_array($label)) {
             return false;
@@ -102,7 +102,7 @@ class Ps_MenuTopLinks
         return $result;
     }
 
-    public static function update($link, $labels, $newWindow = 0, $id_shop, $id_link)
+    public static function update($link, $labels, $newWindow = 0, $id_shop = 0, $id_link = 0)
     {
         if (!is_array($labels)) {
             return false;
