@@ -105,6 +105,7 @@ class Ps_MainMenu extends Module implements WidgetInterface
         if ($delete_params) {
             if ($this->uninstallPrestaShop16Module()) {
                 Configuration::deleteByName('MOD_BLOCKTOPMENU_SEARCH');
+
                 return true;
             }
             if (!$this->installDb() || !Configuration::updateGlobalValue('MOD_BLOCKTOPMENU_ITEMS', 'CAT3,CAT6,CAT9')) {
@@ -184,12 +185,13 @@ class Ps_MainMenu extends Module implements WidgetInterface
         if ($oldModule) {
             // This closure calls the parent class to prevent data to be erased
             // It allows the new module to be configured without migration
-            $parentUninstallClosure = function() {
+            $parentUninstallClosure = function () {
                 return parent::uninstall();
             };
             $parentUninstallClosure = $parentUninstallClosure->bindTo($oldModule, get_class($oldModule));
             $parentUninstallClosure();
         }
+
         return true;
     }
 
